@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://simplecrm_user:motdepasse@localhost:3306/simplecrm"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model TblCompany {
+  id          Int      @id @default(autoincrement())
+  companyName String
+  address     String
+  phoneNumber String
+  email       String
+  vatNumber   String
+  invoices    TblInvoice[]
+}
+
+model Product {
+  id            Int      @id @default(autoincrement())
+  productName   String
+  purchasePrice Float
+  salePrice     Float
+  vat           Float
+}
+
+model TblInvoice {
+  id            Int             @id @default(autoincrement())
+  invoiceNo     String
+  invoiceDate   DateTime
+  dueDate       DateTime
+  totalHT       Float
+  vat           Float
+  totalTTC      Float
+  company       TblCompany      @relation(fields: [companyId], references: [id])
+  companyId     Int
+}
+
+model Client {
+  ID_Client   Int     @id @default(autoincrement())
+  nom         String
+  prenom      String
+  ville       String
+  tel         String   @unique
+  email       String   @unique
+}
